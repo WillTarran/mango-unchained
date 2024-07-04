@@ -17,6 +17,17 @@ if ! which samtools; then
     popd
 fi
 
+if ! which bgzip; then
+    echo "building htslib"
+    rm -rf ${HERE}/tools/htslib-1.20
+    (cd tools/ && curl -L https://github.com/samtools/htslib/releases/download/1.20/htslib-1.20.tar.bz2 | tar -xj)
+    pushd ${HERE}/tools/htslib-1.20
+    ./configure --prefix=${HERE}/tools
+    make
+    make install
+    popd
+fi
+
 if ! which pblat; then
     echo "building pblat"
     rm -rf ${HERE}/tools/pblat
@@ -27,7 +38,7 @@ if ! which pblat; then
     popd
 fi
 
-for tool in liftUp axtChain chainMergeSort chainSplit chainNet netChainSubset; do
+for tool in liftUp faSplit axtChain chainMergeSort chainSplit chainNet netChainSubset; do
     echo "getting ${tool}"
     if ! which ${tool}; then
         curl -L https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/${tool} -o ${HERE}/tools/bin/${tool}
