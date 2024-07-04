@@ -34,3 +34,6 @@ for tool in liftUp axtChain chainMergeSort chainSplit chainNet netChainSubset; d
 	chmod a+x ${HERE}/tools/bin/${tool}
     fi
 done
+
+poetry install
+poetry run pyoverchain -h
